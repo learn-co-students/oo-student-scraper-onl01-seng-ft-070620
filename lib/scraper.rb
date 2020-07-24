@@ -21,9 +21,17 @@ class Scraper
     student[:profile_quote] = doc.css('.profile-quote').text
     student[:bio] = doc.css('.bio-content div.description-holder').text.strip
     doc.css('.social-icon-container a').each do |icon|
-      netwrk = icon.css('img').attribute('src').text.gsub('../assets/img/', '').split('-')[0]
-      netwrk = 'blog' if netwrk == 'rss'
-      student[netwrk.to_sym] = icon.attribute('href').text
+      social_path = icon.css('img').attribute('src').text
+      # netwrk = 'blog' if netwrk != ''
+      if social_path.include?('twitter')
+        student['twitter'] = icon.attribute('href').text
+      elsif social_path.include?('github')
+        student['github'] = icon.attribute('href').text
+      elsif social_path.include?('linkedin')
+        student['linkedin'] = icon.attribute('href').text
+      elsif social_path.include?('rss')
+        student['blog'] = icon.attribute('href').text
+      end #if
     end #do
     student
 
