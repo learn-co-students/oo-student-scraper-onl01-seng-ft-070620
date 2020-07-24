@@ -27,7 +27,28 @@ class Scraper
   def self.scrape_profile_page(profile_url)
     html = open(profile_url)
     doc = Nokogiri::HTML(html)
-    binding.pry
+    
+    profile_hash = {}
+    profile_hash[:bio] = doc.css(".description-holder").css("p").text
+    profile_hash[:profile_quote] = doc.css(".profile-quote").text
+    
+    arr_of_hashes = doc.css(".social-icon-container").css("a").to_a
+    links = arr_of_hashes.map { |hash| hash.values}.flatten
+    
+    if links.any? { |s| s.include?("twitter.com") } == true
+      profile_hash[:twitter] = links.find { |s| s.include?("twitter.com") }
+    end
+    if links.any? { |s| s.include?("linkedin.com") } == true
+      profile_hash[:linkedin] = links.find { |s| s.include?("linkedin.com") }
+    end
+    if links.any? { |s| s.include?("github.com") } == true
+      profile_hash[:github] = links.find { |s| s.include?("github.com") }
+    end
+    if profile_hash.values.any? { |v| v.include?(links.last)} == false
+      profile_hash[:blog] = links.last
+    end
+    
+    profile_hash
   end
 
 end
