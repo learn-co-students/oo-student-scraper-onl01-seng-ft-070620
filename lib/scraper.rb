@@ -22,7 +22,6 @@ class Scraper
     student[:bio] = doc.css('.bio-content div.description-holder').text.strip
     doc.css('.social-icon-container a').each do |icon|
       social_path = icon.css('img').attribute('src').text
-      # netwrk = 'blog' if netwrk != ''
       if social_path.include?('twitter')
         student['twitter'] = icon.attribute('href').text
       elsif social_path.include?('github')
@@ -34,7 +33,6 @@ class Scraper
       end #if
     end #do
     student
-
   end # self.scrape_profile_page
 
 end
