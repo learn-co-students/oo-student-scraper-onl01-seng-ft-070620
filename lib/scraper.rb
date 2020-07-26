@@ -26,18 +26,17 @@ class Scraper
 
     doc.css(".social-icon-container a").each do |social_media|
       social = social_media.css('img').attribute('src').text
-      personal_info[:twitter] = doc.css('.social-icon-container a').attribute("href").text if social.include?('twitter')
-      personal_info[:linkedin] = doc.css('.social-icon-container a').attribute("href").text if social.include?('linkedin')
-      personal_info[:github] = doc.css('.social-icon-container a').attribute("href").text if social.include?('github')
-      personal_info[:blog] = doc.css('.social-icon-container a').attribute("href").text if social.include?('rss')
+      personal_info[:twitter] = social_media.attribute("href").text if social.include?('twitter')
+      personal_info[:linkedin] = social_media.attribute("href").text if social.include?('linkedin')
+      personal_info[:github] = social_media.attribute("href").text if social.include?('github')
+      personal_info[:blog] = social_media.attribute("href").text if social.include?('rss')
     end
 
     personal_info[:profile_quote] = doc.css('.profile-quote').text
     personal_info[:bio] = doc.css('.bio-content div.description-holder').text.strip
-      # binding.pry
     personal_info
+    # binding.pry
   end
-
 end
 
 
